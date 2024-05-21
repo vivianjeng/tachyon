@@ -1,5 +1,5 @@
 load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
-load("//bazel:tachyon.bzl", "if_macos", "if_posix")
+load("//bazel:tachyon.bzl", "if_macos", "if_posix", "if_ios")
 load(
     "//bazel:tachyon_cc.bzl",
     "tachyon_cc_library",
@@ -38,6 +38,7 @@ tachyon_cc_library(
     name = "time",
     srcs = ["time.cc"] + select({
         "@platforms//os:macos": [],
+        "@platforms//os:ios": [],
         "@platforms//os:windows": [],
         "//conditions:default": [
             "time_now_posix.cc",
@@ -49,6 +50,8 @@ tachyon_cc_library(
         ":time_base",
         "//tachyon/base/numerics:checked_math",
     ] + if_macos([
+        ":time_mac",
+    ]) + if_ios([
         ":time_mac",
     ]),
 )
@@ -112,6 +115,8 @@ tachyon_cc_unittest(
         ":time_stamp",
         "//tachyon/base/threading:platform_thread",
     ] + if_macos([
+        ":time_mac_unittests",
+    ])+ if_ios([
         ":time_mac_unittests",
     ]),
 )

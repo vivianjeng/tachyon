@@ -117,6 +117,14 @@ config_setting(
 )
 
 config_setting(
+    name = "ios_arm64",
+    constraint_values = [
+        "@platforms//os:ios",
+        "@platforms//cpu:aarch64",
+    ],
+)
+
+config_setting(
     name = "optimized",
     values = {"compilation_mode": "opt"},
 )

@@ -2,6 +2,7 @@ load(
     "//bazel:tachyon.bzl",
     "if_linux",
     "if_macos",
+    "if_ios",
     "if_posix",
 )
 load(
@@ -82,7 +83,9 @@ tachyon_cc_library(
         "@com_google_absl//absl/strings:str_format",
     ] + if_macos([
         ":file_util_mac",
-    ]),
+    ]) + if_ios([
+        ":file_util_mac",
+    ])
 )
 
 tachyon_objc_library(

@@ -206,7 +206,7 @@ def tachyon_cc_shared_library(
     if soversion != None:
         major_version = soversion.split(".")[0]
 
-        for os in ["macos", "linux"]:
+        for os in ["macos", "linux", "ios"]:
             native.genrule(
                 name = "%s_sym_%s" % (name, os),
                 outs = [("lib%s.dylib" if os == "macos" else "lib%s.so") % name],
@@ -227,11 +227,15 @@ def tachyon_cc_shared_library(
             name = name,
             shared_lib_name = select({
                 "@platforms//os:macos": "lib%s.%s.dylib" % (name, soversion),
+                "@platforms//os:ios": "lib%s.%s.dylib" % (name, soversion),
                 "@platforms//os:windows": "%s.dll" % name,
                 "//conditions:default": "lib%s.so.%s" % (name, soversion),
             }),
             user_link_flags = user_link_flags + select({
                 "@platforms//os:macos": [
+                    "-Wl,-install_name,@rpath/" + "lib%s.%s.dylib" % (name, major_version),
+                ],
+                "@platforms//os:ios": [
                     "-Wl,-install_name,@rpath/" + "lib%s.%s.dylib" % (name, major_version),
                 ],
                 "@platforms//os:windows": [],

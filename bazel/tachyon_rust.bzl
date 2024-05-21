@@ -14,6 +14,12 @@ def tachyon_rustc_flags():
             "-C",
             "link-arg=Foundation",
         ],
+        "@platforms//os:ios": [
+            "-C",
+            "link-arg=-framework",
+            "-C",
+            "link-arg=Foundation",
+        ],
         "//conditions:default": [],
     })
 

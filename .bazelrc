@@ -30,6 +30,23 @@ build:macos_x86_64 --host_cpu=darwin_x86_64
 build:macos_arm64 --config=macos
 build:macos_arm64 --cpu=darwin_arm64
 build:macos_arm64 --host_cpu=darwin_arm64
+# iOS configs for each architecture and the fat binary builds.
+build:ios --apple_platform_type=ios
+build:ios --apple_bitcode=embedded --copt=-fembed-bitcode
+build:ios --copt=-Wno-c++11-narrowing
+build:ios_armv7 --config=ios
+build:ios_armv7 --cpu=ios_armv7
+build:ios_arm64 --config=ios
+build:ios_arm64 --cpu=ios_arm64
+build:ios_arm64 --host_cpu=darwin_arm64
+build:ios_arm64e --config=ios
+build:ios_arm64e --cpu=ios_arm64e
+build:ios_sim_arm64 --config=ios
+build:ios_sim_arm64 --cpu=ios_sim_arm64
+build:ios_x86_64 --config=ios
+build:ios_x86_64 --cpu=ios_x86_64
+build:ios_fat --config=ios
+build:ios_fat --ios_multi_cpus=armv7,arm64,i386,x86_64
 
 # This config refers to building sources with nvcc.
 build:cuda --repo_env TACHYON_NEED_CUDA=1
@@ -63,6 +80,9 @@ build:macos --host_cxxopt=-std=c++17
 build:macos --objccopt=-std=c++17
 build:windows --cxxopt=/std:c++17
 build:windows --host_cxxopt=/std:c++17
+build:ios --cxxopt=-std=c++17
+build:ios --host_cxxopt=-std=c++17
+build:ios --objccopt=-std=c++17
 
 # Instruction set optimizations
 # TODO(chokobole): Create a feature in toolchains for avx/avx2 to
@@ -88,6 +108,7 @@ test --test_tag_filters -benchmark,-manual,-cuda,-rust
 
 build:linux --build_tag_filters -objc,-cuda,-rust
 build:macos --build_tag_filters -cuda,-rust,-doxygen
+build:ios --build_tag_filters -cuda,-rust,-doxygen
 build:windows --build_tag_filters -objc,-cuda,-rust,-doxygen
 
 # Halo2 uses subgroup generator of bn254 scalar field as 7.

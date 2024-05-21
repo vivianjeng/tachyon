@@ -50,6 +50,12 @@ def if_macos(a, b = []):
         "//conditions:default": b,
     })
 
+def if_ios(a, b = []):
+    return select({
+        "@platforms//os:ios": a,
+        "//conditions:default": b,
+    })
+
 def if_windows(a, b = []):
     return select({
         "@platforms//os:windows": a,

@@ -30,7 +30,20 @@ genrule(
         ln -sf /opt/homebrew/include/$$file $(@D)/$$file
       done
     """,
-        "//conditions:default": "",
+    "@kroma_network_tachyon//:ios_arm64": """
+      mkdir -p $(@D)/
+      for file in $(OUTS); do
+        file=$${file##*/}
+        ln -sf /opt/homebrew/include/$$file $(@D)/$$file
+      done
+    """,
+        "//conditions:default": """
+      mkdir -p $(@D)/
+      for file in $(OUTS); do
+        file=$${file##*/}
+        ln -sf /opt/homebrew/include/$$file $(@D)/$$file
+      done
+    """,
     }),
 )
 
@@ -45,6 +58,7 @@ cc_library(
     ] + select({
         "@kroma_network_tachyon//:macos_x86_64": ["-L/usr/local/lib"],
         "@kroma_network_tachyon//:macos_aarch64": ["-L/opt/homebrew/lib"],
-        "//conditions:default": [],
+        "@kroma_network_tachyon//:ios_arm64": ["-L/opt/homebrew/lib"],
+        "//conditions:default": ["-L/opt/homebrew/lib"],
     }),
 )

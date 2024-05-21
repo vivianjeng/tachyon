@@ -1,4 +1,4 @@
-load("//bazel:tachyon.bzl", "if_macos")
+load("//bazel:tachyon.bzl", "if_macos", "if_ios")
 load(
     "//bazel:tachyon_cc.bzl",
     "tachyon_cc_library",
@@ -56,6 +56,8 @@ tachyon_cc_library(
         "//tachyon/build:build_config",
     ] + if_macos([
         "//tachyon/base/mac:scoped_cftyperef",
+    ])+ if_ios([
+        "//tachyon/base/mac:scoped_cftyperef",
     ]),
 )
 
@@ -70,6 +72,8 @@ tachyon_cc_library(
         ":sys_string_conversions_base",
         "//tachyon/base:logging",
     ] + if_macos([
+        ":sys_string_conversions_mac",
+    ]) + if_ios([
         ":sys_string_conversions_mac",
     ]),
 )
@@ -105,6 +109,8 @@ tachyon_cc_unittest(
         ":string_number_conversions",
         ":string_util",
     ] + if_macos([
+        ":strings_mac_unittests",
+    ]) + if_ios([
         ":strings_mac_unittests",
     ]),
 )
